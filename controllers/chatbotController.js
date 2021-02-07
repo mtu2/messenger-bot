@@ -27,18 +27,19 @@ module.exports = {
   },
   // Creates the endpoint for our webhook
   postWebhook: (req, res) => {
-    const body = req.body;
+    let body = req.body;
+    console.log(body);
 
     // Checks this is an event from a page subscription
     if (body.object === "page") {
       // Iterates over each entry - there may be multiple if batched
       body.entry.forEach(function (entry) {
         // Gets the body of the webhook event
-        const webhook_event = entry.messaging[0];
+        let webhook_event = entry.messaging[0];
         console.log(webhook_event);
 
         // Get the sender PSID
-        const sender_psid = webhook_event.sender.id;
+        let sender_psid = webhook_event.sender.id;
         console.log("Sender PSID: " + sender_psid);
       });
 
