@@ -6,6 +6,7 @@ require("dotenv").config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Configure body parser for AJAX requests
 app.use(express.json());
 app.use(cors());
 
@@ -13,9 +14,9 @@ app.use(cors());
 const viewEngine = require("./config/viewEngine");
 viewEngine(app);
 
-// init web routes
-const initWebRoutes = require("./routes/web");
-initWebRoutes(app);
+// import routes
+const routes = require("./routes");
+app.use(routes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port: ${PORT}`);
