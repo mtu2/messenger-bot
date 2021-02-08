@@ -42,6 +42,19 @@ function sendMessage(senderPsid, messagePayloads) {
   ]);
 }
 
+// Send a read receipt to indicate the message has been read
+const sendReadReceipt = (senderPsid) => {
+  const messageData = {
+    recipient: {
+      id: senderPsid,
+    },
+    sender_action: "mark_seen",
+  };
+
+  api.callMessagesAPI(messageData);
+};
+
+// Send initial message to get user started.
 async function sendGetStartedMessage(senderPsid) {
   let firstName;
   try {
@@ -57,18 +70,22 @@ async function sendGetStartedMessage(senderPsid) {
   sendMessage(senderPsid, messages.getStartedMessage(firstName));
 }
 
+// Send message when unknown text is sent from user.
 function sendUnknownCommandMessage(senderPsid, receivedText) {
   sendMessage(senderPsid, messages.unknownCommandMessage(receivedText));
 }
 
+// Send message when an attachment is sent from user.
 function sendAttachmentMessage(senderPsid) {
   sendMessage(senderPsid, messages.attachmentMessage());
 }
 
+// Send quick reply message when user sends a Twitter handle.
 function sendTwitterHandleSearchQuickReply(senderPsid) {
   sendMessage(senderPsid, messages.twitterHandleSearchQuickReply());
 }
 
+// Send message when user selects a Twitter handle from the search quick reply.
 function sendTwitterHandleSelectQuickReply(senderPsid, twitterHandle) {
   sendMessage(
     senderPsid,
@@ -76,20 +93,24 @@ function sendTwitterHandleSelectQuickReply(senderPsid, twitterHandle) {
   );
 }
 
+// Send message with latest tweets from a Twitter handle.
 function sendTwitterHandleLatest(senderPsid, twitterHandle) {
   sendMessage(senderPsid, messages.twitterHandleLatest(twitterHandle));
 }
 
+// Send message with most popular tweets from a Twitter handle.
 function sendTwitterHandlePopular(senderPsid, twitterHandle) {
   sendMessage(senderPsid, messages.twitterHandlePopular(twitterHandle));
 }
 
+// Send message to follow a Twitter handle.
 function sendTwitterHandleFollow(senderPsid, twitterHandle) {
   sendMessage(senderPsid, messages.twitterHandleFollow(twitterHandle));
 }
 
 module.exports = {
   sendMessage,
+  sendReadReceipt,
   sendGetStartedMessage,
   sendUnknownCommandMessage,
   sendAttachmentMessage,
