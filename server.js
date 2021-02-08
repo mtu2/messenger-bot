@@ -18,6 +18,11 @@ viewEngine(app);
 const routes = require("./routes");
 app.use(routes);
 
+// messenger setup
+const threadSetup = require("./messenger-api-helpers/thread-setup");
+threadSetup.setPersistentMenu();
+threadSetup.setGetStarted();
+
 app.listen(PORT, () => {
   console.log(`Server is running on port: ${PORT}`);
 });

@@ -36,11 +36,11 @@ module.exports = {
       req.body.entry.forEach((entry) => {
         // Gets the body of the webhook event
         const webhook_event = entry.messaging[0];
-        console.log(webhook_event);
+        // console.log(webhook_event);
 
         // Get the sender PSID
         const senderPsid = webhook_event.sender.id;
-        console.log("Sender PSID: " + senderPsid);
+        // console.log("Sender PSID: " + senderPsid);
 
         // Check if the event is a message or postback and
         // pass the event to the appropriate handler function

@@ -1,3 +1,36 @@
+// Persistent menu inside Messenger conversations
+const persistentMenu = () => {
+  return {
+    persistent_menu: [
+      {
+        locale: "default",
+        composer_input_disabled: false,
+        call_to_actions: [
+          {
+            type: "postback",
+            title: "Update me",
+            payload: "TWITTER_HANDLE_LATEST_@kanyewest",
+          },
+          {
+            type: "postback",
+            title: "Following list",
+            payload: "TWITTER_HANDLE_LATEST_@barackobama",
+          },
+        ],
+      },
+    ],
+  };
+};
+
+// Get Started button
+const getStarted = () => {
+  return {
+    get_started: {
+      payload: "GET_STARTED",
+    },
+  };
+};
+
 const getStartedMessage = (firstName) => {
   const greeting = {
     text: firstName
@@ -99,6 +132,8 @@ const twitterHandleFollow = (twitterHandle) => {
 };
 
 module.exports = {
+  persistentMenu,
+  getStarted,
   getStartedMessage,
   unknownCommandMessage,
   attachmentMessage,
