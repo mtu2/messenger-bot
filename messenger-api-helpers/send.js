@@ -45,9 +45,7 @@ function sendMessage(senderPsid, messagePayloads) {
 // Send a read receipt to indicate the message has been read
 const sendReadReceipt = (senderPsid) => {
   const messageData = {
-    recipient: {
-      id: senderPsid,
-    },
+    recipient: { id: senderPsid },
     sender_action: "mark_seen",
   };
 

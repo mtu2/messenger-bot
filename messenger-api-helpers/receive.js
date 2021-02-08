@@ -69,7 +69,7 @@ function handleReceiveTextMessage(senderPsid, receivedMessage) {
   const loweredText = receivedMessage.text.toLowerCase();
 
   if (loweredText.includes("@")) {
-    const twitterHandle = "@" + payload.split("@")[1];
+    const twitterHandle = "@" + loweredText.split("@")[1];
 
     if (loweredText.includes("latest")) {
       // If message includes Twitter handle and "latest"
