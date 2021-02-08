@@ -1,8 +1,4 @@
-const request = require("request");
-const axios = require("axios");
-
-const handleMessage = require("../handlers/message");
-const handlePostback = require("../handlers/postback");
+const receiveAPI = require("../messenger-api-helpers/receive");
 
 module.exports = {
   test: (req, res) => {
@@ -43,15 +39,15 @@ module.exports = {
         console.log(webhook_event);
 
         // Get the sender PSID
-        const sender_psid = webhook_event.sender.id;
-        console.log("Sender PSID: " + sender_psid);
+        const senderPsid = webhook_event.sender.id;
+        console.log("Sender PSID: " + senderPsid);
 
         // Check if the event is a message or postback and
         // pass the event to the appropriate handler function
         if (webhook_event.message) {
-          handleMessage(sender_psid, webhook_event.message);
+          receiveAPI.handleReceiveMessage(senderPsid, webhook_event.message);
         } else if (webhook_event.postback) {
-          handlePostback(sender_psid, webhook_event.postback);
+          receiveAPI.handleReceivePostback(senderPsid, webhook_event.postback);
         }
       });
 
