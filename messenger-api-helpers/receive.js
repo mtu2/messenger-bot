@@ -27,7 +27,8 @@ function handleReceiveQuickReply(senderPsid, receivedMessage) {
 }
 
 // Handles postbacks events
-function handleReceivePayload(payload) {
+function handleReceivePayload(senderPsid, payload) {
+  // TODO: implement payloads: UPDATE, FOLLOWING (nothing sends these payloads atm)
   // Perform an action based on the payload received
   if (payload === "GET_STARTED") {
     sendAPI.sendGetStartedQuickReply(senderPsid);
@@ -53,12 +54,16 @@ function handleReceivePayload(payload) {
         // If postback is a "Follow" response
         sendAPI.sendTwitterHandleFollow(senderPsid, twitterHandle);
         break;
+      case "UNFOLLOW":
+        // If postback is a "Unfollow" response
+        sendAPI.sendTwitterHandleUnfollow(senderPsid, twitterHandle);
+        break;
       default:
         console.error(`Unknown twitter handle command received: ${command}`);
         break;
     }
   } else {
-    console.error(`Unknown postback payload received: ${payload}`);
+    console.error(`Unknown payload received: ${payload}`);
   }
 }
 
@@ -84,6 +89,10 @@ function handleReceiveTextMessage(senderPsid, receivedMessage) {
     }
   } else if (loweredText.includes("help") || loweredText.includes("info")) {
     sendAPI.sendMoreInformationMessage(senderPsid);
+  } else if (loweredText.includes("update")) {
+    sendAPI.sendUpdateMessage(senderPsid);
+  } else if (loweredText.includes("following")) {
+    sendAPI.sendFollowingMessage(senderPsid);
   } else {
     sendAPI.sendUnknownCommandMessage(senderPsid, receivedMessage.text);
   }

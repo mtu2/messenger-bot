@@ -83,6 +83,16 @@ function sendMoreInformationMessage(senderPsid) {
   sendMessage(senderPsid, messages.moreInformationMessage());
 }
 
+// Send message when user asks for more information.
+function sendUpdateMessage(senderPsid) {
+  sendMessage(senderPsid, messages.updateMessage());
+}
+
+// Send message when user asks for more information.
+function sendFollowingMessage(senderPsid) {
+  sendMessage(senderPsid, messages.followingMessage());
+}
+
 // Send quick reply message when user sends a Twitter handle.
 function sendTwitterHandleSearch(senderPsid) {
   sendMessage(senderPsid, messages.twitterHandleSearch());
@@ -103,6 +113,11 @@ function sendTwitterHandleFollow(senderPsid, twitterHandle) {
   sendMessage(senderPsid, messages.twitterHandleFollow(twitterHandle));
 }
 
+// Send message to unfollow a Twitter handle.
+function sendTwitterHandleUnfollow(senderPsid, twitterHandle) {
+  sendMessage(senderPsid, messages.twitterHandleUnfollow(twitterHandle));
+}
+
 module.exports = {
   sendMessage,
   sendReadReceipt,
@@ -110,8 +125,11 @@ module.exports = {
   sendUnknownCommandMessage,
   sendAttachmentMessage,
   sendMoreInformationMessage,
+  sendUpdateMessage,
+  sendFollowingMessage,
   sendTwitterHandleSearch,
   sendTwitterHandleLatest,
   sendTwitterHandlePopular,
   sendTwitterHandleFollow,
+  sendTwitterHandleUnfollow,
 };
