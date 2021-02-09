@@ -142,7 +142,7 @@ const twitterHandleSearch = () => {
 
 const twitterHandleLatest = (twitterHandle) => {
   return templates.genText(
-    `If you’ve worked on advanced wearables, phones or robots, those skills are needed @neuralink \n\n Elon Musk ${twitterHandle} \n 💬 9.8K  🔁 12.8K  ❤️ 139.9K`
+    `If you’ve worked on advanced wearables, phones or robots, those skills are needed @neuralink \n\n Elon Musk ${twitterHandle} Dec 12, 2020 \n 💬 9.8K  🔁 12.8K  ❤️ 139.9K`
   );
 };
 
