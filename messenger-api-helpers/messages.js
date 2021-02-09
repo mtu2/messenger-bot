@@ -35,13 +35,15 @@ const getStarted = () => {
 
 const getStartedQuickReply = (firstName) => {
   const greeting = templates.genText(
-    firstName ? `Hi ${firstName}, I'm messenger bot!` : `Hi, I'm messenger bot!`
+    firstName
+      ? `Hi ${firstName}, I'm messenger bot 🤖!`
+      : `Hi, I'm messenger bot 🤖!`
   );
   const about = templates.genText(
     "I provide tweets to you from your favourite people and will update you with tweets from those you choose to follow 😊"
   );
   const action = templates.genText(
-    "Start off by searching for any Twitter handles that interest you."
+    "Start off by searching for any Twitter 🐦 handles that interest you."
   );
   const quickReply = templates.genQuickReply("For example:", [
     {
@@ -82,12 +84,12 @@ const attachmentMessage = () => {
 
 const moreInformationMessage = () => {
   const information1 = templates.genText(
-    "I am a bot designed to provide you with updates from Twitter. 😎"
+    "I am a bot 🤖 designed to provide you with updates from Twitter 🐦."
   );
-  const information2 = templates.getText(
-    "Give me a Twitter handle (e.g. @kanyewest) and I can find their latest or most popular tweets, as well as following them for any future tweets they make 👀."
+  const information2 = templates.genText(
+    "Give me a Twitter 🐦 handle (e.g. @kanyewest) and I can find their latest or most popular tweets, as well as following them for any future tweets they make 👀."
   );
-  const information3 = templates.getText(
+  const information3 = templates.genText(
     "Check new tweets from your follow list by saying `update` or see who you are following by saying `following`."
   );
   return [information1, information2, information3];
