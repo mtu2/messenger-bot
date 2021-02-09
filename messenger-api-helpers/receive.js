@@ -4,16 +4,7 @@ const sendAPI = require("./send");
 function handleReceivePostback(senderPsid, receivedPostback) {
   // Get the payload for the postback
   const payload = receivedPostback.payload;
-
-  // Perform an action based on the postback payload received
-  switch (payload) {
-    case "GET_STARTED":
-      sendAPI.sendGetStartedMessage(senderPsid);
-      break;
-    default:
-      console.error(`Unknown postback payload received: ${payload}`);
-      break;
-  }
+  handleReceivePayload(senderPsid, payload);
 }
 
 // Handles messages events
@@ -32,35 +23,42 @@ function handleReceiveMessage(senderPsid, receivedMessage) {
 // Handles message events that are quick replies
 function handleReceiveQuickReply(senderPsid, receivedMessage) {
   const payload = receivedMessage.quick_reply.payload;
+  handleReceivePayload(senderPsid, payload);
+}
 
-  if (payload.includes("TWITTER_HANDLE")) {
+// Handles postbacks events
+function handleReceivePayload(payload) {
+  // Perform an action based on the payload received
+  if (payload === "GET_STARTED") {
+    sendAPI.sendGetStartedQuickReply(senderPsid);
+  } else if (payload === "MORE_INFORMATION") {
+    sendAPI.sendMoreInformationMessage(senderPsid);
+  } else if (payload.startsWith("TWITTER_HANDLE")) {
     const command = payload.split("_")[2];
     const twitterHandle = "@" + payload.split("@")[1];
 
     switch (command) {
-      case "SELECT":
-        // If quick reply is selection response to Twitter handle search
-        sendAPI.sendTwitterHandleSelectQuickReply(
-          senderPsid,
-          receivedMessage.text
-        );
-        break;
+      case "SEARCH":
+        // If postback is a "Search" response
+        sendAPI.sendTwitterHandleSearch(senderPsid, twitterHandle);
       case "LATEST":
-        // If quick reply is a "Latest" response to Twitter handle select
+        // If postback is a "Latest" response
         sendAPI.sendTwitterHandleLatest(senderPsid, twitterHandle);
         break;
       case "POPULAR":
-        // If quick reply is a "Popular" response to Twitter handle select
+        // If postback is a "Popular" response
         sendAPI.sendTwitterHandlePopular(senderPsid, twitterHandle);
         break;
       case "FOLLOW":
-        // If quick reply is a "Follow" response to Twitter handle select
+        // If postback is a "Follow" response
         sendAPI.sendTwitterHandleFollow(senderPsid, twitterHandle);
         break;
       default:
         console.error(`Unknown twitter handle command received: ${command}`);
         break;
     }
+  } else {
+    console.error(`Unknown postback payload received: ${payload}`);
   }
 }
 
@@ -82,10 +80,11 @@ function handleReceiveTextMessage(senderPsid, receivedMessage) {
       sendAPI.sendTwitterHandleFollow(senderPsid, twitterHandle);
     } else {
       // If text is just a Twitter handle (or includes some unknown command)
-      sendAPI.sendTwitterHandleSearchQuickReply(senderPsid);
+      sendAPI.sendTwitterHandleSearch(senderPsid);
     }
+  } else if (loweredText.includes("help") || loweredText.includes("info")) {
+    sendAPI.sendMoreInformationMessage(senderPsid);
   } else {
-    //  If
     sendAPI.sendUnknownCommandMessage(senderPsid, receivedMessage.text);
   }
 }

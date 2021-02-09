@@ -53,7 +53,7 @@ const sendReadReceipt = (senderPsid) => {
 };
 
 // Send initial message to get user started.
-async function sendGetStartedMessage(senderPsid) {
+async function sendGetStartedQuickReply(senderPsid) {
   let firstName;
   try {
     const res = await axios.get(
@@ -65,7 +65,7 @@ async function sendGetStartedMessage(senderPsid) {
     firstName = "";
   }
 
-  sendMessage(senderPsid, messages.getStartedMessage(firstName));
+  sendMessage(senderPsid, messages.getStartedQuickReply(firstName));
 }
 
 // Send message when unknown text is sent from user.
@@ -78,17 +78,14 @@ function sendAttachmentMessage(senderPsid) {
   sendMessage(senderPsid, messages.attachmentMessage());
 }
 
-// Send quick reply message when user sends a Twitter handle.
-function sendTwitterHandleSearchQuickReply(senderPsid) {
-  sendMessage(senderPsid, messages.twitterHandleSearchQuickReply());
+// Send message when user asks for more information.
+function sendMoreInformationMessage(senderPsid) {
+  sendMessage(senderPsid, messages.moreInformationMessage());
 }
 
-// Send message when user selects a Twitter handle from the search quick reply.
-function sendTwitterHandleSelectQuickReply(senderPsid, twitterHandle) {
-  sendMessage(
-    senderPsid,
-    messages.twitterHandleSelectQuickReply(twitterHandle)
-  );
+// Send quick reply message when user sends a Twitter handle.
+function sendTwitterHandleSearch(senderPsid) {
+  sendMessage(senderPsid, messages.twitterHandleSearch());
 }
 
 // Send message with latest tweets from a Twitter handle.
@@ -109,11 +106,11 @@ function sendTwitterHandleFollow(senderPsid, twitterHandle) {
 module.exports = {
   sendMessage,
   sendReadReceipt,
-  sendGetStartedMessage,
+  sendGetStartedQuickReply,
   sendUnknownCommandMessage,
   sendAttachmentMessage,
-  sendTwitterHandleSearchQuickReply,
-  sendTwitterHandleSelectQuickReply,
+  sendMoreInformationMessage,
+  sendTwitterHandleSearch,
   sendTwitterHandleLatest,
   sendTwitterHandlePopular,
   sendTwitterHandleFollow,

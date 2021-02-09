@@ -1,3 +1,10 @@
 const castArray = (data = []) => (Array.isArray(data) ? data : [data]);
 
-module.exports = { castArray };
+const removeUndefinedFromObj = (obj) =>
+  Object.keys(obj).forEach((key) => {
+    if (obj[key] === undefined) {
+      delete obj[key];
+    }
+  });
+
+module.exports = { castArray, removeUndefinedFromObj };
