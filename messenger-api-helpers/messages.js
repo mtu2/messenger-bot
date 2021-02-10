@@ -146,8 +146,8 @@ const suggestTwitterMessage = () => {
           "https://pbs.twimg.com/profile_images/1352117936270565376/TuJO2jN5_400x400.jpg",
       },
       {
-        title: "More information",
-        payload: "MORE_INFORMATION",
+        title: "Suggest more",
+        payload: "SUGGEST_TWITTER",
       },
     ]
   );
