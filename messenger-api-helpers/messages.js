@@ -48,19 +48,19 @@ const getStartedQuickReply = (firstName) => {
   const quickReply = templates.genQuickReply("For example:", [
     {
       title: "@kanyewest",
-      payload: "TWITTER_HANDLE_SEARCH",
+      payload: "TWITTER_HANDLE_SEARCH_@kanyewest",
       image_url:
         "https://pbs.twimg.com/profile_images/1276461929934942210/cqNhNk6v_400x400.jpg",
     },
     {
       title: "@BarackObama",
-      payload: "TWITTER_HANDLE_SEARCH",
+      payload: "TWITTER_HANDLE_SEARCH_@BarackObama",
       image_url:
         "https://pbs.twimg.com/profile_images/1329647526807543809/2SGvnHYV_400x400.jpg",
     },
     {
       title: "@Weezer",
-      payload: "TWITTER_HANDLE_SEARCH",
+      payload: "TWITTER_HANDLE_SEARCH_@Weezer",
       image_url:
         "https://pbs.twimg.com/profile_images/1352117936270565376/TuJO2jN5_400x400.jpg",
     },
@@ -129,19 +129,19 @@ const suggestTwitterMessage = () => {
     [
       {
         title: "@kanyewest",
-        payload: "TWITTER_HANDLE_SEARCH",
+        payload: "TWITTER_HANDLE_SEARCH_@kanyewest",
         image_url:
           "https://pbs.twimg.com/profile_images/1276461929934942210/cqNhNk6v_400x400.jpg",
       },
       {
         title: "@BarackObama",
-        payload: "TWITTER_HANDLE_SEARCH",
+        payload: "TWITTER_HANDLE_SEARCH_@BarackObama",
         image_url:
           "https://pbs.twimg.com/profile_images/1329647526807543809/2SGvnHYV_400x400.jpg",
       },
       {
         title: "@Weezer",
-        payload: "TWITTER_HANDLE_SEARCH",
+        payload: "TWITTER_HANDLE_SEARCH_@Weezer",
         image_url:
           "https://pbs.twimg.com/profile_images/1352117936270565376/TuJO2jN5_400x400.jpg",
       },
@@ -213,22 +213,22 @@ const followingMessage = () => {
   return [text, genericTemplate];
 };
 
-const twitterHandleSearch = () => {
+const twitterHandleSearch = (twitterHandle) => {
   // TODO: implement
-  const twitterHandle = "@kanyewest"; // dummy
+  const dummyTwitterHandle = "@kanyewest"; // dummy
 
   // Postback buttons
   const latest = templates.genPostbackButton(
     "Latest Tweets",
-    `TWITTER_HANDLE_LATEST_${twitterHandle}`
+    `TWITTER_HANDLE_LATEST_${dummyTwitterHandle}`
   );
   const popular = templates.genPostbackButton(
     "Most Popular Tweets",
-    `TWITTER_HANDLE_POPULAR_${twitterHandle}`
+    `TWITTER_HANDLE_POPULAR_${dummyTwitterHandle}`
   );
   const follow = templates.genPostbackButton(
     "Follow",
-    `TWITTER_HANDLE_FOLLOW_${twitterHandle}`
+    `TWITTER_HANDLE_FOLLOW_${dummyTwitterHandle}`
   );
 
   // Twitter accounts found

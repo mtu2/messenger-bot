@@ -99,8 +99,8 @@ function sendFollowingMessage(senderPsid) {
 }
 
 // Send message when user sends a Twitter handle.
-function sendTwitterHandleSearch(senderPsid) {
-  sendMessage(senderPsid, messages.twitterHandleSearch());
+function sendTwitterHandleSearch(senderPsid, twitterHandle) {
+  sendMessage(senderPsid, messages.twitterHandleSearch(twitterHandle));
 }
 
 // Send message with latest tweets from a Twitter handle.

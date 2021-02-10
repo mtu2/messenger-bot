@@ -37,6 +37,7 @@ function handleReceivePayload(senderPsid, payload) {
       case "SEARCH":
         // If postback is a "Search" response
         sendAPI.sendTwitterHandleSearch(senderPsid, twitterHandle);
+        break;
       case "LATEST":
         // If postback is a "Latest" response
         sendAPI.sendTwitterHandleLatest(senderPsid, twitterHandle);
@@ -103,7 +104,7 @@ function handleReceiveTextMessage(senderPsid, receivedMessage) {
       sendAPI.sendTwitterHandleFollow(senderPsid, twitterHandle);
     } else {
       // If text is just a Twitter handle (or includes some unknown command)
-      sendAPI.sendTwitterHandleSearch(senderPsid);
+      sendAPI.sendTwitterHandleSearch(senderPsid, twitterHandle);
     }
   } else if (loweredText.includes("help") || loweredText.includes("info")) {
     sendAPI.sendMoreInformationMessage(senderPsid);
