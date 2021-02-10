@@ -16,5 +16,13 @@
     "dotenv": "^8.2.0",
     "ejs": "^3.1.6",
     "express": "^4.17.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mtu2/messenger-bot.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mtu2/messenger-bot/issues"
+  },
+  "homepage": "https://github.com/mtu2/messenger-bot#readme"
 }

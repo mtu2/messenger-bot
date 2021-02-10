@@ -69,8 +69,8 @@ async function sendGetStartedQuickReply(senderPsid) {
 }
 
 // Send message when unknown text is sent from user.
-function sendUnknownCommandMessage(senderPsid, receivedText) {
-  sendMessage(senderPsid, messages.unknownCommandMessage(receivedText));
+function sendUnknownCommandMessage(senderPsid) {
+  sendMessage(senderPsid, messages.unknownCommandMessage());
 }
 
 // Send message when an attachment is sent from user.
@@ -83,17 +83,22 @@ function sendMoreInformationMessage(senderPsid) {
   sendMessage(senderPsid, messages.moreInformationMessage());
 }
 
-// Send message when user asks for more information.
+// Send message when user asks for Twitter handle suggestions
+function sendSuggestTwitterMessage(senderPsid) {
+  sendMessage(senderPsid, messages.suggestTwitterMessage());
+}
+
+// Send message when user asks for an update on their following list.
 function sendUpdateMessage(senderPsid) {
   sendMessage(senderPsid, messages.updateMessage());
 }
 
-// Send message when user asks for more information.
+// Send message when user asks for their following list.
 function sendFollowingMessage(senderPsid) {
   sendMessage(senderPsid, messages.followingMessage());
 }
 
-// Send quick reply message when user sends a Twitter handle.
+// Send message when user sends a Twitter handle.
 function sendTwitterHandleSearch(senderPsid) {
   sendMessage(senderPsid, messages.twitterHandleSearch());
 }
@@ -125,6 +130,7 @@ module.exports = {
   sendUnknownCommandMessage,
   sendAttachmentMessage,
   sendMoreInformationMessage,
+  sendSuggestTwitterMessage,
   sendUpdateMessage,
   sendFollowingMessage,
   sendTwitterHandleSearch,

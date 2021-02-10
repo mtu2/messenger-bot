@@ -28,13 +28,8 @@ function handleReceiveQuickReply(senderPsid, receivedMessage) {
 
 // Handles postbacks events
 function handleReceivePayload(senderPsid, payload) {
-  // TODO: implement payloads: UPDATE, FOLLOWING (nothing sends these payloads atm)
-  // Perform an action based on the payload received
-  if (payload === "GET_STARTED") {
-    sendAPI.sendGetStartedQuickReply(senderPsid);
-  } else if (payload === "MORE_INFORMATION") {
-    sendAPI.sendMoreInformationMessage(senderPsid);
-  } else if (payload.startsWith("TWITTER_HANDLE")) {
+  if (payload.startsWith("TWITTER_HANDLE")) {
+    // If payload is related to a specific Twitter handle
     const command = payload.split("_")[2];
     const twitterHandle = "@" + payload.split("@")[1];
 
@@ -59,11 +54,34 @@ function handleReceivePayload(senderPsid, payload) {
         sendAPI.sendTwitterHandleUnfollow(senderPsid, twitterHandle);
         break;
       default:
-        console.error(`Unknown twitter handle command received: ${command}`);
+        console.error(
+          `Unknown twitter handle command/payload received: ${command}`
+        );
         break;
     }
   } else {
-    console.error(`Unknown payload received: ${payload}`);
+    switch (payload) {
+      // General payloads
+      case "GET_STARTED":
+        sendAPI.sendGetStartedQuickReply(senderPsid);
+        break;
+      case "MORE_INFORMATION":
+        sendAPI.sendMoreInformationMessage(senderPsid);
+        break;
+      case "SUGGEST_TWITTER":
+        sendAPI.sendSuggestTwitterMessage(senderPsid);
+        break;
+      // If payload is related to the specific user
+      case "USER_UPDATE":
+        sendAPI.sendUpdateMessage(senderPsid);
+        break;
+      case "USER_FOLLOWING":
+        sendAPI.sendFollowingMessage(senderPsid);
+        break;
+      default:
+        console.error(`Unknown payload received: ${payload}`);
+        break;
+    }
   }
 }
 
@@ -93,8 +111,10 @@ function handleReceiveTextMessage(senderPsid, receivedMessage) {
     sendAPI.sendUpdateMessage(senderPsid);
   } else if (loweredText.includes("following")) {
     sendAPI.sendFollowingMessage(senderPsid);
+  } else if (loweredText.includes("suggest")) {
+    sendAPI.sendSuggestTwitterMessage(senderPsid);
   } else {
-    sendAPI.sendUnknownCommandMessage(senderPsid, receivedMessage.text);
+    sendAPI.sendUnknownCommandMessage(senderPsid);
   }
 }
 
