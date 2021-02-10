@@ -84,20 +84,14 @@ const unknownCommandMessage = () => {
       {
         title: "Update me",
         payload: "USER_UPDATE",
-        image_url:
-          "https://pbs.twimg.com/profile_images/1276461929934942210/cqNhNk6v_400x400.jpg",
       },
       {
         title: "Following list",
         payload: "USER_FOLLOWING",
-        image_url:
-          "https://pbs.twimg.com/profile_images/1329647526807543809/2SGvnHYV_400x400.jpg",
       },
       {
-        title: "Suggestions",
+        title: "Suggest me",
         payload: "SUGGEST_TWITTER",
-        image_url:
-          "https://pbs.twimg.com/profile_images/1352117936270565376/TuJO2jN5_400x400.jpg",
       },
       {
         title: "More information",
