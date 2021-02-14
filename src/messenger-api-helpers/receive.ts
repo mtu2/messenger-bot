@@ -50,23 +50,23 @@ function handleReceivePayload(senderPsid: string, payload: string): void {
     const twitterHandle = "@" + payload.split("@")[1];
 
     switch (command) {
-      case Payload.SEARCH:
+      case Payload.TWITTER_HANDLE_SEARCH:
         // If postback is a "Search" response
         sendAPI.sendTwitterHandleSearch(senderPsid, twitterHandle);
         break;
-      case Payload.LATEST:
+      case Payload.TWITTER_HANDLE_LATEST:
         // If postback is a "Latest" response
         sendAPI.sendTwitterHandleLatest(senderPsid, twitterHandle);
         break;
-      case Payload.POPULAR:
+      case Payload.TWITTER_HANDLE_POPULAR:
         // If postback is a "Popular" response
         sendAPI.sendTwitterHandlePopular(senderPsid, twitterHandle);
         break;
-      case Payload.FOLLOW:
+      case Payload.TWITTER_HANDLE_FOLLOW:
         // If postback is a "Follow" response
         sendAPI.sendTwitterHandleFollow(senderPsid, twitterHandle);
         break;
-      case Payload.UNFOLLOW:
+      case Payload.TWITTER_HANDLE_UNFOLLOW:
         // If postback is a "Unfollow" response
         sendAPI.sendTwitterHandleUnfollow(senderPsid, twitterHandle);
         break;

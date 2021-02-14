@@ -1,4 +1,5 @@
 import * as templates from "./templates";
+import { Payload } from "./types/PayloadEnum";
 import {
   TextPayload,
   QuickReplyTextPayload,
@@ -16,12 +17,22 @@ export const persistentMenu = () => {
           {
             type: "postback",
             title: "Update me",
-            payload: "TWITTER_HANDLE_LATEST_@kanyewest",
+            payload: Payload.USER_UPDATE,
           },
           {
             type: "postback",
             title: "Following list",
-            payload: "TWITTER_HANDLE_LATEST_@barackobama",
+            payload: Payload.USER_FOLLOWING,
+          },
+          {
+            type: "postback",
+            title: "Suggest me",
+            payload: Payload.SUGGEST_TWITTER,
+          },
+          {
+            type: "postback",
+            title: "More information",
+            payload: Payload.MORE_INFORMATION,
           },
         ],
       },
@@ -33,7 +44,7 @@ export const persistentMenu = () => {
 export const getStarted = () => {
   return {
     get_started: {
-      payload: "GET_STARTED",
+      payload: Payload.GET_STARTED,
     },
   };
 };
@@ -53,32 +64,25 @@ export const getStartedQuickReply = (
     "Start off by searching for any Twitter 🐦 handles that interest you."
   );
   const quickReply = templates.genQuickReplyText("For example:", [
-    {
-      content_type: "text",
-      title: "@kanyewest",
-      payload: "TWITTER_HANDLE_SEARCH_@kanyewest",
-      image_url:
-        "https://pbs.twimg.com/profile_images/1276461929934942210/cqNhNk6v_400x400.jpg",
-    },
-    {
-      content_type: "text",
-      title: "@BarackObama",
-      payload: "TWITTER_HANDLE_SEARCH_@BarackObama",
-      image_url:
-        "https://pbs.twimg.com/profile_images/1329647526807543809/2SGvnHYV_400x400.jpg",
-    },
-    {
-      content_type: "text",
-      title: "@Weezer",
-      payload: "TWITTER_HANDLE_SEARCH_@Weezer",
-      image_url:
-        "https://pbs.twimg.com/profile_images/1352117936270565376/TuJO2jN5_400x400.jpg",
-    },
-    {
-      content_type: "text",
-      title: "More information",
-      payload: "MORE_INFORMATION",
-    },
+    templates.genQuickReplyTextElement(
+      "@kanyewest",
+      `${Payload.TWITTER_HANDLE_SEARCH}_@kanyewest`,
+      "https://pbs.twimg.com/profile_images/1276461929934942210/cqNhNk6v_400x400.jpg"
+    ),
+    templates.genQuickReplyTextElement(
+      "@BarackObama",
+      `${Payload.TWITTER_HANDLE_SEARCH}_@BarackObama`,
+      "https://pbs.twimg.com/profile_images/1329647526807543809/2SGvnHYV_400x400.jpg"
+    ),
+    templates.genQuickReplyTextElement(
+      "@Weezer",
+      `${Payload.TWITTER_HANDLE_SEARCH}_@Weezer`,
+      "https://pbs.twimg.com/profile_images/1352117936270565376/TuJO2jN5_400x400.jpg"
+    ),
+    templates.genQuickReplyTextElement(
+      "More information",
+      Payload.MORE_INFORMATION
+    ),
   ]);
   return [greeting, about, action, quickReply];
 };
@@ -95,12 +99,15 @@ export const unknownCommandMessage = (): (
   const quickReply = templates.genQuickReplyText(
     "Here are some other commands that might help:",
     [
-      templates.genQuickReplyTextElement("Update me", "USER_UPDATE"),
-      templates.genQuickReplyTextElement("Following list", "USER_FOLLOWING"),
-      templates.genQuickReplyTextElement("Suggest me", "SUGGEST_TWITTER"),
+      templates.genQuickReplyTextElement("Update me", Payload.USER_UPDATE),
+      templates.genQuickReplyTextElement(
+        "Following list",
+        Payload.USER_FOLLOWING
+      ),
+      templates.genQuickReplyTextElement("Suggest me", Payload.SUGGEST_TWITTER),
       templates.genQuickReplyTextElement(
         "More information",
-        "MORE_INFORMATION"
+        Payload.MORE_INFORMATION
       ),
     ]
   );
@@ -132,32 +139,26 @@ export const suggestTwitterMessage = (): QuickReplyTextPayload => {
   const quickReply = templates.genQuickReplyText(
     "Here are some popular Twitter 🐦 accounts right now:",
     [
-      {
-        content_type: "text",
-        title: "@kanyewest",
-        payload: "TWITTER_HANDLE_SEARCH_@kanyewest",
-        image_url:
-          "https://pbs.twimg.com/profile_images/1276461929934942210/cqNhNk6v_400x400.jpg",
-      },
-      {
-        content_type: "text",
-        title: "@BarackObama",
-        payload: "TWITTER_HANDLE_SEARCH_@BarackObama",
-        image_url:
-          "https://pbs.twimg.com/profile_images/1329647526807543809/2SGvnHYV_400x400.jpg",
-      },
-      {
-        content_type: "text",
-        title: "@Weezer",
-        payload: "TWITTER_HANDLE_SEARCH_@Weezer",
-        image_url:
-          "https://pbs.twimg.com/profile_images/1352117936270565376/TuJO2jN5_400x400.jpg",
-      },
-      {
-        content_type: "text",
-        title: "Suggest more",
-        payload: "SUGGEST_TWITTER",
-      },
+      templates.genQuickReplyTextElement(
+        "@kanyewest",
+        `${Payload.TWITTER_HANDLE_SEARCH}_@kanyewest`,
+        "https://pbs.twimg.com/profile_images/1276461929934942210/cqNhNk6v_400x400.jpg"
+      ),
+      templates.genQuickReplyTextElement(
+        "@BarackObama",
+        `${Payload.TWITTER_HANDLE_SEARCH}_@BarackObama`,
+
+        "https://pbs.twimg.com/profile_images/1329647526807543809/2SGvnHYV_400x400.jpg"
+      ),
+      templates.genQuickReplyTextElement(
+        "@Weezer",
+        `${Payload.TWITTER_HANDLE_SEARCH}_@Weezer`,
+        "https://pbs.twimg.com/profile_images/1352117936270565376/TuJO2jN5_400x400.jpg"
+      ),
+      templates.genQuickReplyTextElement(
+        "Suggest more",
+        Payload.SUGGEST_TWITTER
+      ),
     ]
   );
   return quickReply;
@@ -179,11 +180,11 @@ export const followingMessage = (): (
   // Postback buttons
   const latest = templates.genPostbackButton(
     "Latest Tweets",
-    `TWITTER_HANDLE_LATEST_${twitterHandle}`
+    `${Payload.TWITTER_HANDLE_LATEST}_${twitterHandle}`
   );
   const unfollow = templates.genPostbackButton(
     "Unfollow",
-    `TWITTER_HANDLE_UNFOLLOW_${twitterHandle}`
+    `${Payload.TWITTER_HANDLE_UNFOLLOW}_${twitterHandle}`
   );
 
   // Twitter accounts currently following
@@ -234,15 +235,15 @@ export const twitterHandleSearch = (
   // Postback buttons
   const latest = templates.genPostbackButton(
     "Latest Tweets",
-    `TWITTER_HANDLE_LATEST_${dummyTwitterHandle}`
+    `${Payload.TWITTER_HANDLE_LATEST}_${dummyTwitterHandle}`
   );
   const popular = templates.genPostbackButton(
     "Most Popular Tweets",
-    `TWITTER_HANDLE_POPULAR_${dummyTwitterHandle}`
+    `${Payload.TWITTER_HANDLE_POPULAR}_${dummyTwitterHandle}`
   );
   const follow = templates.genPostbackButton(
     "Follow",
-    `TWITTER_HANDLE_FOLLOW_${dummyTwitterHandle}`
+    `${Payload.TWITTER_HANDLE_FOLLOW}_${dummyTwitterHandle}`
   );
 
   // Twitter accounts found
