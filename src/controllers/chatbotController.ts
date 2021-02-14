@@ -1,12 +1,14 @@
 import * as receiveAPI from "../messenger-api-helpers/receive";
+import { Request, Response } from "express";
 
 export const chatbotController = {
-  test: (req: any, res: any) => {
-    return res.send("Hello again");
+  test: (req: Request, res: Response): void => {
+    res.send("Hello again");
+    return;
   },
 
   // Adds support for GET requests to our webhook
-  getWebhook: (req: any, res: any) => {
+  getWebhook: (req: Request, res: Response): void => {
     const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
 
     // Parse the query params
@@ -29,7 +31,7 @@ export const chatbotController = {
     }
   },
   // Creates the endpoint for our webhook
-  postWebhook: (req: any, res: any) => {
+  postWebhook: (req: Request, res: Response): void => {
     // Checks this is an event from a page subscription
     if (req.body.object === "page") {
       // Iterates over each entry - there may be multiple if batched

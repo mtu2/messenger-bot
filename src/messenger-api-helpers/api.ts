@@ -1,6 +1,11 @@
 import axios from "axios";
+import { SenderAction, Message } from "./types/MessageInterfaces";
 
-async function callAPI(endPoint: any, messageDataArray: any, queryParams: any) {
+async function callAPI(
+  endPoint: string,
+  messageDataArray: any[],
+  queryParams: Record<string, any>
+): Promise<void> {
   // Error if endpoint of request not specified
   if (!endPoint) {
     console.error("callAPI requires you specify an endpoint");
@@ -26,13 +31,16 @@ async function callAPI(endPoint: any, messageDataArray: any, queryParams: any) {
   }
 }
 
-export const callMessagesAPI = (messageDataArray: any, queryParams = {}) => {
-  return callAPI("messages", messageDataArray, queryParams);
+export const callMessagesAPI = (
+  messageDataArray: (SenderAction | Message)[],
+  queryParams = {}
+): void => {
+  callAPI("messages", messageDataArray, queryParams);
 };
 
 export const callMessengerProfileAPI = (
-  messageDataArray: any,
+  messageDataArray: any[],
   queryParams = {}
-) => {
-  return callAPI("messenger_profile", messageDataArray, queryParams);
+): void => {
+  callAPI("messenger_profile", messageDataArray, queryParams);
 };

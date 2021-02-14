@@ -1,4 +1,9 @@
 import * as templates from "./templates";
+import {
+  TextPayload,
+  QuickReplyTextPayload,
+  GenericTemplatePayload,
+} from "./types/MessageInterfaces";
 
 // Persistent menu inside Messenger conversations
 export const persistentMenu = () => {
@@ -33,7 +38,9 @@ export const getStarted = () => {
   };
 };
 
-export const getStartedQuickReply = (firstName: string) => {
+export const getStartedQuickReply = (
+  firstName: string
+): (TextPayload | QuickReplyTextPayload)[] => {
   const greeting = templates.genText(
     firstName
       ? `Hi ${firstName}, I'm messenger bot 🤖!`
@@ -45,26 +52,30 @@ export const getStartedQuickReply = (firstName: string) => {
   const action = templates.genText(
     "Start off by searching for any Twitter 🐦 handles that interest you."
   );
-  const quickReply = templates.genQuickReply("For example:", [
+  const quickReply = templates.genQuickReplyText("For example:", [
     {
+      content_type: "text",
       title: "@kanyewest",
       payload: "TWITTER_HANDLE_SEARCH_@kanyewest",
       image_url:
         "https://pbs.twimg.com/profile_images/1276461929934942210/cqNhNk6v_400x400.jpg",
     },
     {
+      content_type: "text",
       title: "@BarackObama",
       payload: "TWITTER_HANDLE_SEARCH_@BarackObama",
       image_url:
         "https://pbs.twimg.com/profile_images/1329647526807543809/2SGvnHYV_400x400.jpg",
     },
     {
+      content_type: "text",
       title: "@Weezer",
       payload: "TWITTER_HANDLE_SEARCH_@Weezer",
       image_url:
         "https://pbs.twimg.com/profile_images/1352117936270565376/TuJO2jN5_400x400.jpg",
     },
     {
+      content_type: "text",
       title: "More information",
       payload: "MORE_INFORMATION",
     },
@@ -72,44 +83,38 @@ export const getStartedQuickReply = (firstName: string) => {
   return [greeting, about, action, quickReply];
 };
 
-export const unknownCommandMessage = () => {
+export const unknownCommandMessage = (): (
+  | TextPayload
+  | QuickReplyTextPayload
+)[] => {
   // do something with the received text?
   const text1 = templates.genText("Sorry, I don't recognise that command 🥺.");
   const text2 = templates.genText(
     "If you're typing in a Twitter 🐦 handle please include the @ in front."
   );
-  const quickReply = templates.genQuickReply(
+  const quickReply = templates.genQuickReplyText(
     "Here are some other commands that might help:",
     [
-      {
-        title: "Update me",
-        payload: "USER_UPDATE",
-      },
-      {
-        title: "Following list",
-        payload: "USER_FOLLOWING",
-      },
-      {
-        title: "Suggest me",
-        payload: "SUGGEST_TWITTER",
-      },
-      {
-        title: "More information",
-        payload: "MORE_INFORMATION",
-      },
+      templates.genQuickReplyTextElement("Update me", "USER_UPDATE"),
+      templates.genQuickReplyTextElement("Following list", "USER_FOLLOWING"),
+      templates.genQuickReplyTextElement("Suggest me", "SUGGEST_TWITTER"),
+      templates.genQuickReplyTextElement(
+        "More information",
+        "MORE_INFORMATION"
+      ),
     ]
   );
 
   return [text1, text2, quickReply];
 };
 
-export const attachmentMessage = () => {
+export const attachmentMessage = (): TextPayload => {
   return templates.genText(
     "Sorry! I'm not sure what to do with attachments 🥺."
   );
 };
 
-export const moreInformationMessage = () => {
+export const moreInformationMessage = (): TextPayload[] => {
   const information1 = templates.genText(
     "I am a bot 🤖 designed to provide you with updates from Twitter 🐦."
   );
@@ -122,44 +127,51 @@ export const moreInformationMessage = () => {
   return [information1, information2, information3];
 };
 
-export const suggestTwitterMessage = () => {
+export const suggestTwitterMessage = (): QuickReplyTextPayload => {
   // TODO: implement (suggests random popular twitter handles)
-  const quickReply = templates.genQuickReply(
+  const quickReply = templates.genQuickReplyText(
     "Here are some popular Twitter 🐦 accounts right now:",
     [
       {
+        content_type: "text",
         title: "@kanyewest",
         payload: "TWITTER_HANDLE_SEARCH_@kanyewest",
         image_url:
           "https://pbs.twimg.com/profile_images/1276461929934942210/cqNhNk6v_400x400.jpg",
       },
       {
+        content_type: "text",
         title: "@BarackObama",
         payload: "TWITTER_HANDLE_SEARCH_@BarackObama",
         image_url:
           "https://pbs.twimg.com/profile_images/1329647526807543809/2SGvnHYV_400x400.jpg",
       },
       {
+        content_type: "text",
         title: "@Weezer",
         payload: "TWITTER_HANDLE_SEARCH_@Weezer",
         image_url:
           "https://pbs.twimg.com/profile_images/1352117936270565376/TuJO2jN5_400x400.jpg",
       },
       {
+        content_type: "text",
         title: "Suggest more",
         payload: "SUGGEST_TWITTER",
       },
     ]
   );
-  return [quickReply];
+  return quickReply;
 };
 
-export const updateMessage = () => {
+export const updateMessage = (): TextPayload => {
   // TODO: implement
   return templates.genText("Sorry! I haven't learnt `update` yet 🥺.");
 };
 
-export const followingMessage = () => {
+export const followingMessage = (): (
+  | TextPayload
+  | GenericTemplatePayload
+)[] => {
   // TODO: implement
 
   const twitterHandle = "@kanyewest"; // dummy
@@ -213,7 +225,9 @@ export const followingMessage = () => {
   return [text, genericTemplate];
 };
 
-export const twitterHandleSearch = (twitterHandle: string) => {
+export const twitterHandleSearch = (
+  twitterHandle: string
+): (TextPayload | GenericTemplatePayload)[] => {
   // TODO: implement
   const dummyTwitterHandle = "@kanyewest"; // dummy
 
@@ -259,7 +273,7 @@ export const twitterHandleSearch = (twitterHandle: string) => {
   ];
 };
 
-export const twitterHandleLatest = (twitterHandle: string) => {
+export const twitterHandleLatest = (twitterHandle: string): TextPayload[] => {
   // TODO: implement
 
   const text = templates.genText(
@@ -272,7 +286,7 @@ export const twitterHandleLatest = (twitterHandle: string) => {
   return [text, latestTweet];
 };
 
-export const twitterHandlePopular = (twitterHandle: string) => {
+export const twitterHandlePopular = (twitterHandle: string): TextPayload[] => {
   // TODO: implement
 
   const text = templates.genText(
@@ -285,12 +299,12 @@ export const twitterHandlePopular = (twitterHandle: string) => {
   return [text, latestTweet];
 };
 
-export const twitterHandleFollow = (twitterHandle: string) => {
+export const twitterHandleFollow = (twitterHandle: string): TextPayload => {
   // TODO: implement
   return templates.genText(`Now following ${twitterHandle}.`);
 };
 
-export const twitterHandleUnfollow = (twitterHandle: string) => {
+export const twitterHandleUnfollow = (twitterHandle: string): TextPayload => {
   // TODO: implement
   return templates.genText(`Unfollowed ${twitterHandle}.`);
 };

@@ -2,9 +2,14 @@ import { callMessagesAPI } from "./api";
 import * as messages from "./messages";
 import { castArray } from "../utils/utils";
 import axios from "axios";
+import {
+  MessagePayload,
+  Message,
+  SenderAction,
+} from "./types/MessageInterfaces";
 
 // Turns typing indicator on.
-export function typingOn(senderPsid: string) {
+export function typingOn(senderPsid: string): SenderAction {
   return {
     recipient: { id: senderPsid },
     sender_action: "typing_on",
@@ -12,15 +17,23 @@ export function typingOn(senderPsid: string) {
 }
 
 // Turns typing indicator off.
-export function typingOff(senderPsid: string) {
+export function typingOff(senderPsid: string): SenderAction {
   return {
     recipient: { id: senderPsid },
     sender_action: "typing_off",
   };
 }
 
+// Send a read receipt to indicate the message has been read
+export function sendReadReceipt(senderPsid: string): void {
+  callMessagesAPI([senderActionToJSON(senderPsid, "mark_seen")]);
+}
+
 // Wraps a message JSON object with recipient information.
-export function messageToJSON(senderPsid: string, messagePayload: any) {
+function messageToJSON(
+  senderPsid: string,
+  messagePayload: MessagePayload
+): Message {
   return {
     recipient: {
       id: senderPsid,
@@ -29,8 +42,21 @@ export function messageToJSON(senderPsid: string, messagePayload: any) {
   };
 }
 
+function senderActionToJSON(
+  senderPsid: string,
+  senderAction: string
+): SenderAction {
+  return {
+    recipient: { id: senderPsid },
+    sender_action: senderAction,
+  };
+}
+
 // Sends response messages using the Send API.
-export function sendMessage(senderPsid: string, messagePayloads: any) {
+export function sendMessage(
+  senderPsid: string,
+  messagePayloads: MessagePayload | MessagePayload[]
+): void {
   const messageArray = castArray(messagePayloads).map((messagePayload: any) =>
     messageToJSON(senderPsid, messagePayload)
   );
@@ -42,18 +68,10 @@ export function sendMessage(senderPsid: string, messagePayloads: any) {
   ]);
 }
 
-// Send a read receipt to indicate the message has been read
-export function sendReadReceipt(senderPsid: string) {
-  const messageData = {
-    recipient: { id: senderPsid },
-    sender_action: "mark_seen",
-  };
-
-  callMessagesAPI(messageData);
-}
-
 // Send initial message to get user started.
-export async function sendGetStartedQuickReply(senderPsid: string) {
+export async function sendGetStartedQuickReply(
+  senderPsid: string
+): Promise<void> {
   let firstName;
   try {
     const res = await axios.get(
@@ -69,32 +87,32 @@ export async function sendGetStartedQuickReply(senderPsid: string) {
 }
 
 // Send message when unknown text is sent from user.
-export function sendUnknownCommandMessage(senderPsid: string) {
+export function sendUnknownCommandMessage(senderPsid: string): void {
   sendMessage(senderPsid, messages.unknownCommandMessage());
 }
 
 // Send message when an attachment is sent from user.
-export function sendAttachmentMessage(senderPsid: string) {
+export function sendAttachmentMessage(senderPsid: string): void {
   sendMessage(senderPsid, messages.attachmentMessage());
 }
 
 // Send message when user asks for more information.
-export function sendMoreInformationMessage(senderPsid: string) {
+export function sendMoreInformationMessage(senderPsid: string): void {
   sendMessage(senderPsid, messages.moreInformationMessage());
 }
 
 // Send message when user asks for Twitter handle suggestions
-export function sendSuggestTwitterMessage(senderPsid: string) {
+export function sendSuggestTwitterMessage(senderPsid: string): void {
   sendMessage(senderPsid, messages.suggestTwitterMessage());
 }
 
 // Send message when user asks for an update on their following list.
-export function sendUpdateMessage(senderPsid: string) {
+export function sendUpdateMessage(senderPsid: string): void {
   sendMessage(senderPsid, messages.updateMessage());
 }
 
 // Send message when user asks for their following list.
-export function sendFollowingMessage(senderPsid: string) {
+export function sendFollowingMessage(senderPsid: string): void {
   sendMessage(senderPsid, messages.followingMessage());
 }
 
@@ -102,7 +120,7 @@ export function sendFollowingMessage(senderPsid: string) {
 export function sendTwitterHandleSearch(
   senderPsid: string,
   twitterHandle: string
-) {
+): void {
   sendMessage(senderPsid, messages.twitterHandleSearch(twitterHandle));
 }
 
@@ -110,7 +128,7 @@ export function sendTwitterHandleSearch(
 export function sendTwitterHandleLatest(
   senderPsid: string,
   twitterHandle: string
-) {
+): void {
   sendMessage(senderPsid, messages.twitterHandleLatest(twitterHandle));
 }
 
@@ -118,7 +136,7 @@ export function sendTwitterHandleLatest(
 export function sendTwitterHandlePopular(
   senderPsid: string,
   twitterHandle: string
-) {
+): void {
   sendMessage(senderPsid, messages.twitterHandlePopular(twitterHandle));
 }
 
@@ -126,7 +144,7 @@ export function sendTwitterHandlePopular(
 export function sendTwitterHandleFollow(
   senderPsid: string,
   twitterHandle: string
-) {
+): void {
   sendMessage(senderPsid, messages.twitterHandleFollow(twitterHandle));
 }
 
@@ -134,6 +152,6 @@ export function sendTwitterHandleFollow(
 export function sendTwitterHandleUnfollow(
   senderPsid: string,
   twitterHandle: string
-) {
+): void {
   sendMessage(senderPsid, messages.twitterHandleUnfollow(twitterHandle));
 }

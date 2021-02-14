@@ -1,24 +1,50 @@
 import { removeUndefinedFromObj, castArray } from "../utils/utils";
+import {
+  TextPayload,
+  QuickReplyTextElement,
+  QuickReplyTextPayload,
+  GenericTemplateElement,
+  GenericTemplatePayload,
+  ButtonPayload,
+  PostbackButtonPayload,
+  WebUrlButtonPayload,
+} from "./types/MessageInterfaces";
 
-export const genText = (text: string) => ({
+export const genText = (text: string): TextPayload => ({
   text: text,
 });
 
-export const genQuickReply = (text: string, quickReplies: any) => ({
+export const genQuickReplyText = (
+  text: string,
+  quickReplies: QuickReplyTextElement[]
+): QuickReplyTextPayload => ({
   text: text,
-  quick_replies: quickReplies.map((quickReply: any) => {
-    const ele = {
-      content_type: "text",
-      title: quickReply["title"],
-      payload: quickReply["payload"],
-      image_url: quickReply["image_url"],
-    };
+  quick_replies: quickReplies.map((quickReply: QuickReplyTextElement) => {
+    const ele = { ...quickReply };
     removeUndefinedFromObj(ele);
     return ele;
   }),
 });
 
-export const genGenericTemplate = (elements: any) => {
+export const genQuickReplyTextElement = (
+  title: string,
+  payload: string,
+  image_url: string | undefined = undefined
+): QuickReplyTextElement => {
+  const element: QuickReplyTextElement = {
+    content_type: "text",
+    title,
+    payload,
+    image_url,
+  };
+  removeUndefinedFromObj(element);
+
+  return element;
+};
+
+export const genGenericTemplate = (
+  elements: GenericTemplateElement | GenericTemplateElement[]
+): GenericTemplatePayload => {
   const elementsArray = castArray(elements);
 
   // if elements is an array with more than one entry this will be a carousel
@@ -36,9 +62,9 @@ export const genGenericTemplate = (elements: any) => {
 export const genGenericTemplateElement = (
   title: string,
   subtitle: string,
-  buttons: any,
+  buttons: ButtonPayload | ButtonPayload[],
   image_url: string
-) => {
+): GenericTemplateElement => {
   const buttonsArray = buttons === undefined ? undefined : castArray(buttons);
 
   const element = {
@@ -57,39 +83,20 @@ export const genGenericTemplateElement = (
   return element;
 };
 
-export const genPostbackButton = (title: string, payload: any) => ({
+export const genPostbackButton = (
+  title: string,
+  payload: string
+): PostbackButtonPayload => ({
   type: "postback",
   title,
   payload,
 });
 
-export const genWebUrlButton = (title: string, url: string) => ({
+export const genWebUrlButton = (
+  title: string,
+  url: string
+): WebUrlButtonPayload => ({
   type: "web_url",
   title,
   url,
 });
-
-// [
-//   {
-//     title: "Welcome!",
-//     image_url: "https://petersfancybrownhats.com/company_image.png",
-//     subtitle: "We have the right hat for everyone.",
-//     default_action: {
-//       type: "web_url",
-//       url: "https://petersfancybrownhats.com/view?item=103",
-//       webview_height_ratio: "tall",
-//     },
-//     buttons: [
-//       {
-//         type: "web_url",
-//         url: "https://petersfancybrownhats.com",
-//         title: "View Website",
-//       },
-//       {
-//         type: "postback",
-//         title: "Start Chatting",
-//         payload: "DEVELOPER_DEFINED_PAYLOAD",
-//       },
-//     ],
-//   },
-// ],

@@ -2,11 +2,11 @@ import { persistentMenu, getStarted } from "./messages";
 import { callMessengerProfileAPI } from "./api";
 
 export const threadSetup = {
-  setPersistentMenu: () => {
-    callMessengerProfileAPI(persistentMenu());
+  setPersistentMenu: (): void => {
+    callMessengerProfileAPI([persistentMenu()]);
   },
 
-  setGetStarted: () => {
-    callMessengerProfileAPI(getStarted());
+  setGetStarted: (): void => {
+    callMessengerProfileAPI([getStarted()]);
   },
 };

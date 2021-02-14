@@ -1,59 +1,72 @@
 import * as sendAPI from "./send";
+import { Payload } from "./types/PayloadEnum";
+import {
+  ReceivedMessage,
+  ReceivedPostback,
+  ReceivedQuickReply,
+  ReceivedTextMessage,
+} from "./types/ReceiveInterfaces";
 
 // Handles messaging_postbacks events
 export function handleReceivePostback(
   senderPsid: string,
-  receivedPostback: any
-) {
+  receivedPostback: ReceivedPostback
+): void {
   // Get the payload for the postback
   const payload = receivedPostback.payload;
   handleReceivePayload(senderPsid, payload);
 }
 
 // Handles messages events
-export function handleReceiveMessage(senderPsid: string, receivedMessage: any) {
+export function handleReceiveMessage(
+  senderPsid: string,
+  receivedMessage: ReceivedMessage
+): void {
   sendAPI.sendReadReceipt(senderPsid);
 
-  if (receivedMessage.quick_reply) {
+  if ("quick_reply" in receivedMessage) {
     handleReceiveQuickReply(senderPsid, receivedMessage);
-  } else if (receivedMessage.attachments) {
+  } else if ("attachments" in receivedMessage) {
     handleReceiveAttachmentMessage(senderPsid);
-  } else if (receivedMessage.text) {
+  } else if ("text" in receivedMessage) {
     handleReceiveTextMessage(senderPsid, receivedMessage);
   }
 }
 
 // Handles message events that are quick replies
-function handleReceiveQuickReply(senderPsid: string, receivedMessage: any) {
+function handleReceiveQuickReply(
+  senderPsid: string,
+  receivedMessage: ReceivedQuickReply
+): void {
   const payload = receivedMessage.quick_reply.payload;
   handleReceivePayload(senderPsid, payload);
 }
 
 // Handles postbacks events
-function handleReceivePayload(senderPsid: string, payload: any) {
+function handleReceivePayload(senderPsid: string, payload: string): void {
   if (payload.startsWith("TWITTER_HANDLE")) {
     // If payload is related to a specific Twitter handle
     const command = payload.split("_")[2];
     const twitterHandle = "@" + payload.split("@")[1];
 
     switch (command) {
-      case "SEARCH":
+      case Payload.SEARCH:
         // If postback is a "Search" response
         sendAPI.sendTwitterHandleSearch(senderPsid, twitterHandle);
         break;
-      case "LATEST":
+      case Payload.LATEST:
         // If postback is a "Latest" response
         sendAPI.sendTwitterHandleLatest(senderPsid, twitterHandle);
         break;
-      case "POPULAR":
+      case Payload.POPULAR:
         // If postback is a "Popular" response
         sendAPI.sendTwitterHandlePopular(senderPsid, twitterHandle);
         break;
-      case "FOLLOW":
+      case Payload.FOLLOW:
         // If postback is a "Follow" response
         sendAPI.sendTwitterHandleFollow(senderPsid, twitterHandle);
         break;
-      case "UNFOLLOW":
+      case Payload.UNFOLLOW:
         // If postback is a "Unfollow" response
         sendAPI.sendTwitterHandleUnfollow(senderPsid, twitterHandle);
         break;
@@ -66,20 +79,20 @@ function handleReceivePayload(senderPsid: string, payload: any) {
   } else {
     switch (payload) {
       // General payloads
-      case "GET_STARTED":
+      case Payload.GET_STARTED:
         sendAPI.sendGetStartedQuickReply(senderPsid);
         break;
-      case "MORE_INFORMATION":
+      case Payload.MORE_INFORMATION:
         sendAPI.sendMoreInformationMessage(senderPsid);
         break;
-      case "SUGGEST_TWITTER":
+      case Payload.SUGGEST_TWITTER:
         sendAPI.sendSuggestTwitterMessage(senderPsid);
         break;
       // If payload is related to the specific user
-      case "USER_UPDATE":
+      case Payload.USER_UPDATE:
         sendAPI.sendUpdateMessage(senderPsid);
         break;
-      case "USER_FOLLOWING":
+      case Payload.USER_FOLLOWING:
         sendAPI.sendFollowingMessage(senderPsid);
         break;
       default:
@@ -90,7 +103,10 @@ function handleReceivePayload(senderPsid: string, payload: any) {
 }
 
 // Handles message events that are just text
-function handleReceiveTextMessage(senderPsid: string, receivedMessage: any) {
+function handleReceiveTextMessage(
+  senderPsid: string,
+  receivedMessage: ReceivedTextMessage
+): void {
   const loweredText = receivedMessage.text.toLowerCase();
 
   if (loweredText.includes("@")) {
@@ -123,6 +139,6 @@ function handleReceiveTextMessage(senderPsid: string, receivedMessage: any) {
 }
 
 // Handles message events that contain attachments
-function handleReceiveAttachmentMessage(senderPsid: string) {
+function handleReceiveAttachmentMessage(senderPsid: string): void {
   sendAPI.sendAttachmentMessage(senderPsid);
 }
