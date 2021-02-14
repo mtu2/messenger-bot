@@ -1,25 +1,25 @@
-const utils = require("../utils/utils");
+import { removeUndefinedFromObj, castArray } from "../utils/utils";
 
-const genText = (text) => ({
+export const genText = (text: string) => ({
   text: text,
 });
 
-const genQuickReply = (text, quickReplies) => ({
+export const genQuickReply = (text: string, quickReplies: any) => ({
   text: text,
-  quick_replies: quickReplies.map((quickReply) => {
+  quick_replies: quickReplies.map((quickReply: any) => {
     const ele = {
       content_type: "text",
       title: quickReply["title"],
       payload: quickReply["payload"],
       image_url: quickReply["image_url"],
     };
-    utils.removeUndefinedFromObj(ele);
+    removeUndefinedFromObj(ele);
     return ele;
   }),
 });
 
-const genGenericTemplate = (elements) => {
-  const elementsArray = utils.castArray(elements);
+export const genGenericTemplate = (elements: any) => {
+  const elementsArray = castArray(elements);
 
   // if elements is an array with more than one entry this will be a carousel
   return {
@@ -33,9 +33,13 @@ const genGenericTemplate = (elements) => {
   };
 };
 
-const genGenericTemplateElement = (title, subtitle, buttons, image_url) => {
-  const buttonsArray =
-    buttons === undefined ? undefined : utils.castArray(buttons);
+export const genGenericTemplateElement = (
+  title: string,
+  subtitle: string,
+  buttons: any,
+  image_url: string
+) => {
+  const buttonsArray = buttons === undefined ? undefined : castArray(buttons);
 
   const element = {
     title,
@@ -48,31 +52,22 @@ const genGenericTemplateElement = (title, subtitle, buttons, image_url) => {
     //   webview_height_ratio: "tall",
     // },
   };
-  utils.removeUndefinedFromObj(element);
+  removeUndefinedFromObj(element);
 
   return element;
 };
 
-const genPostbackButton = (title, payload) => ({
+export const genPostbackButton = (title: string, payload: any) => ({
   type: "postback",
   title,
   payload,
 });
 
-const genWebUrlButton = (title, url) => ({
+export const genWebUrlButton = (title: string, url: string) => ({
   type: "web_url",
   title,
   url,
 });
-
-module.exports = {
-  genText,
-  genQuickReply,
-  genGenericTemplate,
-  genGenericTemplateElement,
-  genPostbackButton,
-  genWebUrlButton,
-};
 
 // [
 //   {

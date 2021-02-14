@@ -1,10 +1,10 @@
-const api = require("./api");
-const messages = require("./messages");
-const utils = require("../utils/utils");
-const axios = require("axios");
+import { callMessagesAPI } from "./api";
+import * as messages from "./messages";
+import { castArray } from "../utils/utils";
+import axios from "axios";
 
 // Turns typing indicator on.
-function typingOn(senderPsid) {
+export function typingOn(senderPsid: string) {
   return {
     recipient: { id: senderPsid },
     sender_action: "typing_on",
@@ -12,7 +12,7 @@ function typingOn(senderPsid) {
 }
 
 // Turns typing indicator off.
-function typingOff(senderPsid) {
+export function typingOff(senderPsid: string) {
   return {
     recipient: { id: senderPsid },
     sender_action: "typing_off",
@@ -20,7 +20,7 @@ function typingOff(senderPsid) {
 }
 
 // Wraps a message JSON object with recipient information.
-function messageToJSON(senderPsid, messagePayload) {
+export function messageToJSON(senderPsid: string, messagePayload: any) {
   return {
     recipient: {
       id: senderPsid,
@@ -30,12 +30,12 @@ function messageToJSON(senderPsid, messagePayload) {
 }
 
 // Sends response messages using the Send API.
-function sendMessage(senderPsid, messagePayloads) {
-  const messageArray = utils
-    .castArray(messagePayloads)
-    .map((messagePayload) => messageToJSON(senderPsid, messagePayload));
+export function sendMessage(senderPsid: string, messagePayloads: any) {
+  const messageArray = castArray(messagePayloads).map((messagePayload: any) =>
+    messageToJSON(senderPsid, messagePayload)
+  );
 
-  api.callMessagesAPI([
+  callMessagesAPI([
     typingOn(senderPsid),
     ...messageArray,
     typingOff(senderPsid),
@@ -43,17 +43,17 @@ function sendMessage(senderPsid, messagePayloads) {
 }
 
 // Send a read receipt to indicate the message has been read
-const sendReadReceipt = (senderPsid) => {
+export function sendReadReceipt(senderPsid: string) {
   const messageData = {
     recipient: { id: senderPsid },
     sender_action: "mark_seen",
   };
 
-  api.callMessagesAPI(messageData);
-};
+  callMessagesAPI(messageData);
+}
 
 // Send initial message to get user started.
-async function sendGetStartedQuickReply(senderPsid) {
+export async function sendGetStartedQuickReply(senderPsid: string) {
   let firstName;
   try {
     const res = await axios.get(
@@ -69,73 +69,71 @@ async function sendGetStartedQuickReply(senderPsid) {
 }
 
 // Send message when unknown text is sent from user.
-function sendUnknownCommandMessage(senderPsid) {
+export function sendUnknownCommandMessage(senderPsid: string) {
   sendMessage(senderPsid, messages.unknownCommandMessage());
 }
 
 // Send message when an attachment is sent from user.
-function sendAttachmentMessage(senderPsid) {
+export function sendAttachmentMessage(senderPsid: string) {
   sendMessage(senderPsid, messages.attachmentMessage());
 }
 
 // Send message when user asks for more information.
-function sendMoreInformationMessage(senderPsid) {
+export function sendMoreInformationMessage(senderPsid: string) {
   sendMessage(senderPsid, messages.moreInformationMessage());
 }
 
 // Send message when user asks for Twitter handle suggestions
-function sendSuggestTwitterMessage(senderPsid) {
+export function sendSuggestTwitterMessage(senderPsid: string) {
   sendMessage(senderPsid, messages.suggestTwitterMessage());
 }
 
 // Send message when user asks for an update on their following list.
-function sendUpdateMessage(senderPsid) {
+export function sendUpdateMessage(senderPsid: string) {
   sendMessage(senderPsid, messages.updateMessage());
 }
 
 // Send message when user asks for their following list.
-function sendFollowingMessage(senderPsid) {
+export function sendFollowingMessage(senderPsid: string) {
   sendMessage(senderPsid, messages.followingMessage());
 }
 
 // Send message when user sends a Twitter handle.
-function sendTwitterHandleSearch(senderPsid, twitterHandle) {
+export function sendTwitterHandleSearch(
+  senderPsid: string,
+  twitterHandle: string
+) {
   sendMessage(senderPsid, messages.twitterHandleSearch(twitterHandle));
 }
 
 // Send message with latest tweets from a Twitter handle.
-function sendTwitterHandleLatest(senderPsid, twitterHandle) {
+export function sendTwitterHandleLatest(
+  senderPsid: string,
+  twitterHandle: string
+) {
   sendMessage(senderPsid, messages.twitterHandleLatest(twitterHandle));
 }
 
 // Send message with most popular tweets from a Twitter handle.
-function sendTwitterHandlePopular(senderPsid, twitterHandle) {
+export function sendTwitterHandlePopular(
+  senderPsid: string,
+  twitterHandle: string
+) {
   sendMessage(senderPsid, messages.twitterHandlePopular(twitterHandle));
 }
 
 // Send message to follow a Twitter handle.
-function sendTwitterHandleFollow(senderPsid, twitterHandle) {
+export function sendTwitterHandleFollow(
+  senderPsid: string,
+  twitterHandle: string
+) {
   sendMessage(senderPsid, messages.twitterHandleFollow(twitterHandle));
 }
 
 // Send message to unfollow a Twitter handle.
-function sendTwitterHandleUnfollow(senderPsid, twitterHandle) {
+export function sendTwitterHandleUnfollow(
+  senderPsid: string,
+  twitterHandle: string
+) {
   sendMessage(senderPsid, messages.twitterHandleUnfollow(twitterHandle));
 }
-
-module.exports = {
-  sendMessage,
-  sendReadReceipt,
-  sendGetStartedQuickReply,
-  sendUnknownCommandMessage,
-  sendAttachmentMessage,
-  sendMoreInformationMessage,
-  sendSuggestTwitterMessage,
-  sendUpdateMessage,
-  sendFollowingMessage,
-  sendTwitterHandleSearch,
-  sendTwitterHandleLatest,
-  sendTwitterHandlePopular,
-  sendTwitterHandleFollow,
-  sendTwitterHandleUnfollow,
-};

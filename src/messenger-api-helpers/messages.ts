@@ -1,7 +1,7 @@
-const templates = require("./templates");
+import * as templates from "./templates";
 
 // Persistent menu inside Messenger conversations
-const persistentMenu = () => {
+export const persistentMenu = () => {
   return {
     persistent_menu: [
       {
@@ -25,7 +25,7 @@ const persistentMenu = () => {
 };
 
 // Get Started button
-const getStarted = () => {
+export const getStarted = () => {
   return {
     get_started: {
       payload: "GET_STARTED",
@@ -33,7 +33,7 @@ const getStarted = () => {
   };
 };
 
-const getStartedQuickReply = (firstName) => {
+export const getStartedQuickReply = (firstName: string) => {
   const greeting = templates.genText(
     firstName
       ? `Hi ${firstName}, I'm messenger bot 🤖!`
@@ -72,7 +72,7 @@ const getStartedQuickReply = (firstName) => {
   return [greeting, about, action, quickReply];
 };
 
-const unknownCommandMessage = () => {
+export const unknownCommandMessage = () => {
   // do something with the received text?
   const text1 = templates.genText("Sorry, I don't recognise that command 🥺.");
   const text2 = templates.genText(
@@ -103,13 +103,13 @@ const unknownCommandMessage = () => {
   return [text1, text2, quickReply];
 };
 
-const attachmentMessage = () => {
+export const attachmentMessage = () => {
   return templates.genText(
     "Sorry! I'm not sure what to do with attachments 🥺."
   );
 };
 
-const moreInformationMessage = () => {
+export const moreInformationMessage = () => {
   const information1 = templates.genText(
     "I am a bot 🤖 designed to provide you with updates from Twitter 🐦."
   );
@@ -122,7 +122,7 @@ const moreInformationMessage = () => {
   return [information1, information2, information3];
 };
 
-const suggestTwitterMessage = () => {
+export const suggestTwitterMessage = () => {
   // TODO: implement (suggests random popular twitter handles)
   const quickReply = templates.genQuickReply(
     "Here are some popular Twitter 🐦 accounts right now:",
@@ -154,12 +154,12 @@ const suggestTwitterMessage = () => {
   return [quickReply];
 };
 
-const updateMessage = () => {
+export const updateMessage = () => {
   // TODO: implement
   return templates.genText("Sorry! I haven't learnt `update` yet 🥺.");
 };
 
-const followingMessage = () => {
+export const followingMessage = () => {
   // TODO: implement
 
   const twitterHandle = "@kanyewest"; // dummy
@@ -213,7 +213,7 @@ const followingMessage = () => {
   return [text, genericTemplate];
 };
 
-const twitterHandleSearch = (twitterHandle) => {
+export const twitterHandleSearch = (twitterHandle: string) => {
   // TODO: implement
   const dummyTwitterHandle = "@kanyewest"; // dummy
 
@@ -259,7 +259,7 @@ const twitterHandleSearch = (twitterHandle) => {
   ];
 };
 
-const twitterHandleLatest = (twitterHandle) => {
+export const twitterHandleLatest = (twitterHandle: string) => {
   // TODO: implement
 
   const text = templates.genText(
@@ -272,7 +272,7 @@ const twitterHandleLatest = (twitterHandle) => {
   return [text, latestTweet];
 };
 
-const twitterHandlePopular = (twitterHandle) => {
+export const twitterHandlePopular = (twitterHandle: string) => {
   // TODO: implement
 
   const text = templates.genText(
@@ -285,29 +285,12 @@ const twitterHandlePopular = (twitterHandle) => {
   return [text, latestTweet];
 };
 
-const twitterHandleFollow = (twitterHandle) => {
+export const twitterHandleFollow = (twitterHandle: string) => {
   // TODO: implement
   return templates.genText(`Now following ${twitterHandle}.`);
 };
 
-const twitterHandleUnfollow = (twitterHandle) => {
+export const twitterHandleUnfollow = (twitterHandle: string) => {
   // TODO: implement
   return templates.genText(`Unfollowed ${twitterHandle}.`);
-};
-
-module.exports = {
-  persistentMenu,
-  getStarted,
-  getStartedQuickReply,
-  unknownCommandMessage,
-  attachmentMessage,
-  moreInformationMessage,
-  suggestTwitterMessage,
-  updateMessage,
-  followingMessage,
-  twitterHandleSearch,
-  twitterHandleLatest,
-  twitterHandlePopular,
-  twitterHandleFollow,
-  twitterHandleUnfollow,
 };

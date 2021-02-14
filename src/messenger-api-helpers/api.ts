@@ -1,11 +1,9 @@
-const axios = require("axios");
+import axios from "axios";
 
-async function callAPI(endPoint, messageDataArray) {
+async function callAPI(endPoint: any, messageDataArray: any, queryParams: any) {
   // Error if endpoint of request not specified
   if (!endPoint) {
-    HTMLFormControlsCollection.error(
-      "callAPI requires you specify an endpoint"
-    );
+    console.error("callAPI requires you specify an endpoint");
     return;
   }
 
@@ -28,12 +26,13 @@ async function callAPI(endPoint, messageDataArray) {
   }
 }
 
-const callMessagesAPI = (messageDataArray, queryParams = {}) => {
+export const callMessagesAPI = (messageDataArray: any, queryParams = {}) => {
   return callAPI("messages", messageDataArray, queryParams);
 };
 
-const callMessengerProfileAPI = (messageDataArray, queryParams = {}) => {
+export const callMessengerProfileAPI = (
+  messageDataArray: any,
+  queryParams = {}
+) => {
   return callAPI("messenger_profile", messageDataArray, queryParams);
 };
-
-module.exports = { callMessagesAPI, callMessengerProfileAPI };

@@ -1,14 +1,17 @@
-const sendAPI = require("./send");
+import * as sendAPI from "./send";
 
 // Handles messaging_postbacks events
-function handleReceivePostback(senderPsid, receivedPostback) {
+export function handleReceivePostback(
+  senderPsid: string,
+  receivedPostback: any
+) {
   // Get the payload for the postback
   const payload = receivedPostback.payload;
   handleReceivePayload(senderPsid, payload);
 }
 
 // Handles messages events
-function handleReceiveMessage(senderPsid, receivedMessage) {
+export function handleReceiveMessage(senderPsid: string, receivedMessage: any) {
   sendAPI.sendReadReceipt(senderPsid);
 
   if (receivedMessage.quick_reply) {
@@ -21,13 +24,13 @@ function handleReceiveMessage(senderPsid, receivedMessage) {
 }
 
 // Handles message events that are quick replies
-function handleReceiveQuickReply(senderPsid, receivedMessage) {
+function handleReceiveQuickReply(senderPsid: string, receivedMessage: any) {
   const payload = receivedMessage.quick_reply.payload;
   handleReceivePayload(senderPsid, payload);
 }
 
 // Handles postbacks events
-function handleReceivePayload(senderPsid, payload) {
+function handleReceivePayload(senderPsid: string, payload: any) {
   if (payload.startsWith("TWITTER_HANDLE")) {
     // If payload is related to a specific Twitter handle
     const command = payload.split("_")[2];
@@ -87,7 +90,7 @@ function handleReceivePayload(senderPsid, payload) {
 }
 
 // Handles message events that are just text
-function handleReceiveTextMessage(senderPsid, receivedMessage) {
+function handleReceiveTextMessage(senderPsid: string, receivedMessage: any) {
   const loweredText = receivedMessage.text.toLowerCase();
 
   if (loweredText.includes("@")) {
@@ -120,8 +123,6 @@ function handleReceiveTextMessage(senderPsid, receivedMessage) {
 }
 
 // Handles message events that contain attachments
-function handleReceiveAttachmentMessage(senderPsid) {
+function handleReceiveAttachmentMessage(senderPsid: string) {
   sendAPI.sendAttachmentMessage(senderPsid);
 }
-
-module.exports = { handleReceiveMessage, handleReceivePostback };
