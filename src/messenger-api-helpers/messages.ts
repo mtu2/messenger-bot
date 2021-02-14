@@ -229,21 +229,18 @@ export const followingMessage = (): (
 export const twitterHandleSearch = (
   twitterHandle: string
 ): (TextPayload | GenericTemplatePayload)[] => {
-  // TODO: implement
-  const dummyTwitterHandle = "@kanyewest"; // dummy
-
   // Postback buttons
   const latest = templates.genPostbackButton(
     "Latest Tweets",
-    `${Payload.TWITTER_HANDLE_LATEST}_${dummyTwitterHandle}`
+    `${Payload.TWITTER_HANDLE_LATEST}_${twitterHandle}`
   );
   const popular = templates.genPostbackButton(
     "Most Popular Tweets",
-    `${Payload.TWITTER_HANDLE_POPULAR}_${dummyTwitterHandle}`
+    `${Payload.TWITTER_HANDLE_POPULAR}_${twitterHandle}`
   );
   const follow = templates.genPostbackButton(
     "Follow",
-    `${Payload.TWITTER_HANDLE_FOLLOW}_${dummyTwitterHandle}`
+    `${Payload.TWITTER_HANDLE_FOLLOW}_${twitterHandle}`
   );
 
   // Twitter accounts found

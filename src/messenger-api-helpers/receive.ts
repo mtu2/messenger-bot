@@ -46,8 +46,9 @@ function handleReceiveQuickReply(
 function handleReceivePayload(senderPsid: string, payload: string): void {
   if (payload.startsWith("TWITTER_HANDLE")) {
     // If payload is related to a specific Twitter handle
-    const command = payload.split("_")[2];
-    const twitterHandle = "@" + payload.split("@")[1];
+    const split = payload.split("_");
+    const command = `${split[0]}_${split[1]}_${split[2]}`;
+    const twitterHandle = split[3];
 
     switch (command) {
       case Payload.TWITTER_HANDLE_SEARCH:
